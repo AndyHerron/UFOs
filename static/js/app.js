@@ -24,28 +24,31 @@ function buildTable(data) {
 }
 
 // 1. Create a variable to keep track of all the filters as an object.
-var filters;
+var filters = {};
 
 // 3. Use this function to update the filters. 
 function updateFilters() {
   // 4a. Save the element that was changed as a variable.
-  // Input fields can trigger a change event when new text is entered.
-  input.on("change", function() {
-    console.log("something was entered");
-    // 4b. Save the value that was changed as a variable.
-    let newText = d3.event.target.value;
-    console.log(newText);
-  
+  let changedElement = d3.select(this);
 
-    // 4c. Save the id of the filter that was changed as a variable.
+  // 4b. Save the value that was changed as a variable.
+  let elementValue = changedElement.property("value");
+  console.log(elementValue);
 
-    // 5. If a filter value was entered then add that filterId and value
-    // to the filters list. Otherwise, clear that filter from the filters object.
-
-    // 6. Call function to apply all filters and rebuild the table
-    filterTable();
-  
+  // 4c. Save the id of the filter that was changed as a variable.
+  let filterId = changedElement.attr("id");
+  console.log(filterId);
+  // 5. If a filter value was entered then add that filterId and value
+  // to the filters list. Otherwise, clear that filter from the filters object.
+  if (elementValue) {
+    filters[filterId] = elementValue;
   }
+  else {
+    delete filters[filterId];
+  }
+  // 6. Call function to apply all filters and rebuild the table
+  filterTable();
+  
 }
 
 // 7. Use this function to filter the table when data is entered.
@@ -63,11 +66,8 @@ function filterTable() {
 }
   
 // 2. Attach an event to listen for changes to each filter
-input.on("change", function() {
-  var newText = d3.event.target.value;
-    console.log(newText);
+d3.selectAll("input").on("change", updateFilters);
 
-    var inputField = d3.select("#input-field");
-    // <input type="text" placeholder="City" id="city"
+
 // Build the table when the page loads
 buildTable(tableData);
