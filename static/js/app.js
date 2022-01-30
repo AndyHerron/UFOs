@@ -28,39 +28,46 @@ var filters;
 
 // 3. Use this function to update the filters. 
 function updateFilters() {
-
-    // 4a. Save the element that was changed as a variable.
-
+  // 4a. Save the element that was changed as a variable.
+  // Input fields can trigger a change event when new text is entered.
+  input.on("change", function() {
+    console.log("something was entered");
     // 4b. Save the value that was changed as a variable.
+    let newText = d3.event.target.value;
+    console.log(newText);
+  
 
     // 4c. Save the id of the filter that was changed as a variable.
 
-  
     // 5. If a filter value was entered then add that filterId and value
     // to the filters list. Otherwise, clear that filter from the filters object.
- 
-  
+
     // 6. Call function to apply all filters and rebuild the table
     filterTable();
   
   }
-  
-  // 7. Use this function to filter the table when data is entered.
-  function filterTable() {
+}
+
+// 7. Use this function to filter the table when data is entered.
+function filterTable() {
   
     // 8. Set the filtered data to the tableData.
-    
-  
+    let filteredData = tableData;
+
     // 9. Loop through all of the filters and keep any data that
     // matches the filter values
-    
+    filteredData = filteredData.filter(row => row.datetime === date);
   
     // 10. Finally, rebuild the table using the filtered data
-    
-  }
+    buildTable(filteredData);
+}
   
-  // 2. Attach an event to listen for changes to each filter
-  
-  
-  // Build the table when the page loads
-  buildTable(tableData);
+// 2. Attach an event to listen for changes to each filter
+input.on("change", function() {
+  var newText = d3.event.target.value;
+    console.log(newText);
+
+    var inputField = d3.select("#input-field");
+    // <input type="text" placeholder="City" id="city"
+// Build the table when the page loads
+buildTable(tableData);
